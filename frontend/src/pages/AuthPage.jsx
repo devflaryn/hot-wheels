@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useLang } from '../lib/i18n.jsx';
 import LangSwitch from '../components/LangSwitch.jsx';
-import { isNativeApp, clearServer } from '../lib/api';
+import { isNativeApp } from '../lib/api';
 
 export default function AuthPage() {
   const { login, register } = useAuth();
@@ -14,6 +14,15 @@ export default function AuthPage() {
   const [remember, setRemember] = useState(true);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [apkAvailable, setApkAvailable] = useState(false);
+
+  // Offer the Android app for download on the website (not inside the app itself)
+  useEffect(() => {
+    if (isNativeApp()) return;
+    fetch('/HotWheelsCollection.apk', { method: 'HEAD' })
+      .then((res) => setApkAvailable(res.ok))
+      .catch(() => {});
+  }, []);
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -129,16 +138,10 @@ export default function AuthPage() {
       </div>
 
       <p className="mt-6 text-xs text-blue-300">{t('privateNote')}</p>
-      {isNativeApp() && (
-        <button
-          onClick={() => {
-            clearServer();
-            window.location.reload();
-          }}
-          className="mt-2 text-xs text-blue-300 underline"
-        >
-          {t('changeServer')}
-        </button>
+      {apkAvailable && (
+        <a href="/HotWheelsCollection.apk" download className="mt-2 text-xs text-blue-300 underline">
+          {t('downloadApk')}
+        </a>
       )}
     </div>
   );

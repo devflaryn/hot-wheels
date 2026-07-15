@@ -50,7 +50,7 @@ const translations = {
     serverPlaceholder: 'http://YOUR_SERVER_IP:3000',
     serverConnect: 'Connect',
     serverFailed: 'Could not reach the server at this address.',
-    changeServer: 'Change server',
+    downloadApk: 'Download the Android app (.apk)',
     // server error messages
     serverErrors: {},
   },
@@ -103,7 +103,7 @@ const translations = {
     serverPlaceholder: 'http://SUNUCU_IP:3000',
     serverConnect: 'Bağlan',
     serverFailed: 'Bu adresteki sunucuya ulaşılamadı.',
-    changeServer: 'Sunucuyu değiştir',
+    downloadApk: 'Android uygulamasını indir (.apk)',
     serverErrors: {
       'Enter a valid email address.': 'Geçerli bir e-posta adresi girin.',
       'Password must be at least 8 characters.': 'Şifre en az 8 karakter olmalıdır.',

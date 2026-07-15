@@ -34,13 +34,11 @@ export default function ServerSetupPage({ onConnected }) {
       </div>
 
       <div className="mb-8 text-center">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-hw-orange shadow-lg shadow-hw-orange/40">
-          <svg viewBox="0 0 64 64" className="h-10 w-10">
-            <circle cx="32" cy="32" r="18" fill="#fff" />
-            <circle cx="32" cy="32" r="8" fill="#ffc906" />
-            <circle cx="32" cy="32" r="3" fill="#0b1f3a" />
-          </svg>
-        </div>
+        <img
+          src="/logo-transparent.png"
+          alt="Hot Wheels Catalog"
+          className="mx-auto mb-4 h-24 w-24 object-contain drop-shadow-lg"
+        />
         <h1 className="font-display text-2xl font-extrabold italic tracking-tight text-white">
           {t('appTitle1')} <span className="text-hw-yellow">{t('appTitle2')}</span>
         </h1>

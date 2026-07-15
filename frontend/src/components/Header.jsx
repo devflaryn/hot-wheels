@@ -10,12 +10,7 @@ export default function Header() {
     <header className="sticky top-0 z-30 mb-6 bg-hw-navy shadow-lg">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-3">
-          <svg viewBox="0 0 64 64" className="h-9 w-9">
-            <circle cx="32" cy="32" r="30" fill="#f7681e" />
-            <circle cx="32" cy="32" r="18" fill="#fff" />
-            <circle cx="32" cy="32" r="8" fill="#ffc906" />
-            <circle cx="32" cy="32" r="3" fill="#0b1f3a" />
-          </svg>
+          <img src="/logo-transparent.png" alt="" className="h-11 w-11 object-contain" />
           <div className="leading-tight">
             <p className="font-display text-lg font-extrabold italic tracking-tight text-white">
               {t('appTitle1')} <span className="text-hw-yellow">{t('appTitle2')}</span>

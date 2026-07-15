@@ -51,6 +51,7 @@ const translations = {
     serverConnect: 'Connect',
     serverFailed: 'Could not reach the server at this address.',
     downloadApk: 'Download the Android app (.apk)',
+    downloadApkShort: 'Android app',
     // server error messages
     serverErrors: {},
   },
@@ -104,6 +105,7 @@ const translations = {
     serverConnect: 'Bağlan',
     serverFailed: 'Bu adresteki sunucuya ulaşılamadı.',
     downloadApk: 'Android uygulamasını indir (.apk)',
+    downloadApkShort: 'Android uygulaması',
     serverErrors: {
       'Enter a valid email address.': 'Geçerli bir e-posta adresi girin.',
       'Password must be at least 8 characters.': 'Şifre en az 8 karakter olmalıdır.',

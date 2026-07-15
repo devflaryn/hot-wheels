@@ -1,6 +1,7 @@
 import { useAuth } from '../context/AuthContext.jsx';
 import { useLang } from '../lib/i18n.jsx';
 import LangSwitch from './LangSwitch.jsx';
+import ApkDownloadLink from './ApkDownloadLink.jsx';
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -23,6 +24,10 @@ export default function Header() {
           <span className="hidden max-w-[200px] truncate text-sm text-blue-100 sm:block">
             {user?.displayName || user?.email}
           </span>
+          <ApkDownloadLink
+            short
+            className="rounded-full border border-white/20 px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-white/10"
+          />
           <LangSwitch dark />
           <button
             onClick={logout}

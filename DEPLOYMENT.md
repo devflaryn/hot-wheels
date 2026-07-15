@@ -112,15 +112,11 @@ tap "Change server" on the login screen, or update `.env.mobile` and rebuild.
 
 ## Installing on your phone
 
-1. Upload the APK to the server once (it is not in git):
-
-   ```bash
-   scp HotWheelsCollection.apk youruser@YOUR_VPS_IP:~/hotwheels/
-   ```
-
-   The login page on the website then automatically shows a
-   "Download the Android app (.apk)" link (it hides itself while the file is
-   missing). Open the site on the phone and tap it — or copy the APK over by
+1. The APK ships with the repo, so a normal deploy (`git pull` / rsync) puts it
+   on the server. The website then automatically shows a
+   "Download the Android app (.apk)" link — on the login page and, once signed
+   in, in the header ("Android app"). The link hides itself while the file is
+   missing. Open the site on the phone and tap it — or copy the APK over by
    USB/Drive instead.
 2. Open the file and allow "install from unknown sources" when prompted.
 3. Launch the app and log in — it connects to the baked-in server automatically.

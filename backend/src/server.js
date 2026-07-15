@@ -51,9 +51,8 @@ app.get('/api/health', (_req, res) => res.json({ ok: true }));
 const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, '..', 'uploads');
 app.use('/uploads', express.static(UPLOAD_DIR, { maxAge: '7d', fallthrough: false }));
 
-// Android APK download. The APK is not in git — copy it to the project root on
-// the server (scp HotWheelsCollection.apk user@server:~/hotwheels/). The login
-// page only shows the download link when this file exists.
+// Android APK download, served from the project root. The frontend only shows
+// the download link when this file exists.
 const APK_FILE = process.env.APK_FILE || path.join(__dirname, '..', '..', 'HotWheelsCollection.apk');
 app.get('/HotWheelsCollection.apk', (_req, res) => {
   if (!fs.existsSync(APK_FILE)) return res.status(404).json({ error: 'APK not available' });

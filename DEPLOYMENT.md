@@ -105,10 +105,10 @@ and switch `PORT` back to 3000.
 # The Android APK
 
 The app ships as `HotWheelsCollection.apk` in the project root — the React app
-wrapped in a Capacitor WebView. **You don't need to bake your server IP into the
-build**: on first launch the app asks for your server address (e.g.
-`http://YOUR_VPS_IP:3000`), checks it, and remembers it. If the IP ever changes,
-tap "Change server" on the login screen.
+wrapped in a Capacitor WebView. The server address is baked into the build via
+`frontend/.env.mobile` (`VITE_API_URL=http://72.62.59.232`), so the app connects
+directly on launch with no setup screen. If the server IP ever changes, either
+tap "Change server" on the login screen, or update `.env.mobile` and rebuild.
 
 ## Installing on your phone
 
@@ -122,11 +122,14 @@ tap "Change server" on the login screen.
 
 ```bash
 cd frontend
-npm run build
+npm run build -- --mode mobile   # bakes VITE_API_URL from .env.mobile into the app
 npx cap sync android
 cd android && JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew assembleDebug
 # → android/app/build/outputs/apk/debug/app-debug.apk
 ```
+
+Afterwards run a plain `npm run build` again so `frontend/dist` (what the server
+hosts) goes back to same-origin URLs without the baked IP.
 
 This is a debug-signed APK — perfect for installing on your own phone. If you ever
 publish to the Play Store you'll need a release keystore (Android Studio →

@@ -1,0 +1,12 @@
+# Dependencies (reinstalled with `npm install`)
+node_modules/
+
+# Android APK — not part of the server deployment
+*.apk
+
+# macOS
+.DS_Store
+
+# Env files with secrets (examples are kept)
+.env
+.env.local

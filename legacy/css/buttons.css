@@ -1,0 +1,26 @@
+.button {
+    user-select: none;
+    display: inline-flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 10px 0 10px 0;
+    gap: 8px;
+    font-size: 16px;
+    color: white;
+    background-color: #0071e3;
+    cursor: pointer;
+    border-radius: 90px;
+    transition: all 0.3s ease;
+}
+
+.button p {
+    font-size: 2em;
+}
+
+.button:hover {
+    background-color: #1b66c9;
+    box-shadow: 4px 4px 15px -10px rgba(0,0,0,0.75);
+    transform: scale(1.02);
+}

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.mobile
+
+# Android build outputs (the android/ project itself is kept)
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties

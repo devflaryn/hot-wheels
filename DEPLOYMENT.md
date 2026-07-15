@@ -50,14 +50,27 @@ node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
 > Or keep `PORT=3000` and access the site as `http://YOUR_VPS_IP:3000` (open the port
 > in your firewall: `sudo ufw allow 3000`).
 
-## 4. Keep it running with PM2
+## 4. Keep it running with PM2 (auto-restart on crash and on reboot)
+
+PM2 supervises the Node process: if the app crashes it is restarted within
+seconds, and after `pm2 startup` it also comes back automatically when the
+whole server reboots. The settings live in `ecosystem.config.js`.
 
 ```bash
 sudo npm install -g pm2
 cd ~/hotwheels
-pm2 start backend/src/server.js --name hotwheels
-pm2 save
-pm2 startup            # run the command it prints, so it survives reboots
+pm2 start ecosystem.config.js   # starts the app with the production settings
+pm2 save                        # remember the process list
+pm2 startup                     # print a command — run it once with sudo,
+                                # so PM2 itself starts on every reboot
+```
+
+Useful commands:
+
+```bash
+pm2 status              # is it running? how many restarts?
+pm2 logs hotwheels      # live logs (errors + output)
+pm2 restart hotwheels   # manual restart after an update
 ```
 
 Check it: open `http://YOUR_VPS_IP/` in a browser, create your account, done.
@@ -69,6 +82,10 @@ cd ~/hotwheels && git pull        # or rsync again
 npm install && npm run build
 pm2 restart hotwheels
 ```
+
+Test that auto-restart works: `pm2 status` shows the app `online`; kill it with
+`kill <pid>` and PM2 brings it back within a couple of seconds (the restart
+counter in `pm2 status` goes up by one).
 
 Your data is safe across updates — it lives in `backend/data/` and `backend/uploads/`.
 **Back up those two folders regularly**, e.g.:

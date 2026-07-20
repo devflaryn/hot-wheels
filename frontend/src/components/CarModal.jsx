@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { api, assetUrl } from '../lib/api';
+import { carImageUrl } from '../lib/carImage';
 import { useLang } from '../lib/i18n.jsx';
 
 const CONDITIONS = ['Mint', 'Good', 'Fair', 'Poor', 'Damaged'];
@@ -12,7 +13,9 @@ export default function CarModal({ car, item, onClose, onChange, onError }) {
   const [busy, setBusy] = useState(false);
   const [notes, setNotes] = useState(item?.notes || '');
   const [activePhoto, setActivePhoto] = useState(0);
+  const [showUserPhoto, setShowUserPhoto] = useState(false);
   const fileRef = useRef(null);
+  const catalogImage = carImageUrl(car);
 
   useEffect(() => {
     function onKey(e) {
@@ -73,6 +76,7 @@ export default function CarModal({ car, item, onClose, onChange, onError }) {
       }
       onChange(latest);
       setActivePhoto((latest?.photos?.length || 1) - 1);
+      setShowUserPhoto(true);
     });
 
   const removePhoto = (photoId) =>
@@ -81,7 +85,12 @@ export default function CarModal({ car, item, onClose, onChange, onError }) {
       onChange(updated);
     });
 
-  const cover = photos[activePhoto] ? assetUrl(photos[activePhoto].url) : null;
+  const userPhoto = photos[activePhoto] ? assetUrl(photos[activePhoto].url) : null;
+  // Catalog artwork is the main cover; the user's own photo sits in a small
+  // corner square, and tapping it swaps the two.
+  const coverIsUserPhoto = userPhoto && (showUserPhoto || !catalogImage);
+  const cover = coverIsUserPhoto ? userPhoto : catalogImage;
+  const cornerImage = catalogImage && userPhoto ? (coverIsUserPhoto ? catalogImage : userPhoto) : null;
 
   return (
     <div
@@ -95,7 +104,11 @@ export default function CarModal({ car, item, onClose, onChange, onError }) {
         {/* Cover photo area */}
         <div className="relative flex h-56 items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
           {cover ? (
-            <img src={cover} alt={car.name} className="h-full w-full object-cover" />
+            <img
+              src={cover}
+              alt={car.name}
+              className={`h-full w-full ${coverIsUserPhoto ? 'object-cover' : 'object-contain p-3'}`}
+            />
           ) : (
             <div className="text-center text-slate-400">
               <svg viewBox="0 0 24 24" className="mx-auto h-16 w-16" fill="currentColor">
@@ -115,9 +128,22 @@ export default function CarModal({ car, item, onClose, onChange, onError }) {
             {car.year} · #{car.collectorNumber}
           </span>
           {photos.length > 1 && (
-            <span className="absolute bottom-3 right-3 rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-semibold text-white">
+            <span className="absolute bottom-3 left-3 rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-semibold text-white">
               {activePhoto + 1}/{photos.length}
             </span>
+          )}
+          {cornerImage && (
+            <button
+              onClick={() => setShowUserPhoto((v) => !v)}
+              className="absolute bottom-3 right-3 h-16 w-16 overflow-hidden rounded-xl border-2 border-white bg-white shadow-lg transition hover:scale-105"
+              aria-label={t('photoOfYourCar')}
+            >
+              <img
+                src={cornerImage}
+                alt=""
+                className={`h-full w-full ${coverIsUserPhoto ? 'object-contain' : 'object-cover'}`}
+              />
+            </button>
           )}
         </div>
 
@@ -195,7 +221,10 @@ export default function CarModal({ car, item, onClose, onChange, onError }) {
                       className={`group relative aspect-square cursor-pointer overflow-hidden rounded-xl border-2 ${
                         i === activePhoto ? 'border-hw-orange' : 'border-transparent'
                       }`}
-                      onClick={() => setActivePhoto(i)}
+                      onClick={() => {
+                        setActivePhoto(i);
+                        setShowUserPhoto(true);
+                      }}
                     >
                       <img
                         src={assetUrl(p.url)}

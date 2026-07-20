@@ -52,7 +52,7 @@ export default function CatalogPage() {
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return cars.filter((c) => {
+    const matches = cars.filter((c) => {
       if (series !== 'all' && c.series !== series) return false;
       if (ownedOnly && !collection[c.id]?.owned) return false;
       if (!q) return true;
@@ -63,6 +63,28 @@ export default function CatalogPage() {
         String(Number(c.collectorNumber)) === q.replace(/^0+/, '')
       );
     });
+    // Colour variants share a collector number — show one card per number,
+    // preferring a variant the user owns so the card reflects their garage.
+    // Each card is labelled with the first variant's name and the total
+    // colour count for that number in the full year list.
+    const variantInfo = new Map();
+    for (const c of cars) {
+      const info = variantInfo.get(c.collectorNumber);
+      if (!info) variantInfo.set(c.collectorNumber, { name: c.name, count: 1 });
+      else info.count += 1;
+    }
+    const byNumber = new Map();
+    for (const c of matches) {
+      const prev = byNumber.get(c.collectorNumber);
+      if (!prev || (!collection[prev.id]?.owned && collection[c.id]?.owned)) {
+        byNumber.set(c.collectorNumber, c);
+      }
+    }
+    return [...byNumber.values()].map((c) => ({
+      ...c,
+      baseName: variantInfo.get(c.collectorNumber).name,
+      variantCount: variantInfo.get(c.collectorNumber).count,
+    }));
   }, [cars, search, series, ownedOnly, collection]);
 
   const ownedInYear = useMemo(
@@ -206,7 +228,7 @@ export default function CatalogPage() {
             {t('noMatch')}
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {filtered.map((car) => (
               <CarCard
                 key={car.id}
